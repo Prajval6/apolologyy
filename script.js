@@ -33,26 +33,26 @@ function changeCard(direction) {
     if (isAnimating) return;
     isAnimating = true;
 
-    const el = getAnimateEl();
-    
+    // Animate the slider container itself — works for ALL card types (img or div)
+    const outClass = direction === 'next' ? 'swipe-left-out' : 'swipe-right-out';
+    slider.classList.add(outClass);
+
     if (direction === 'next') {
-        el.classList.add('swipe-left-out');
         currentIndex = (currentIndex + 1) % cards.length;
     } else {
-        el.classList.add('swipe-right-out');
         currentIndex = (currentIndex - 1 + cards.length) % cards.length;
     }
 
     setTimeout(() => {
         slider.innerHTML = cards[currentIndex];
-        const newEl = getAnimateEl();
-        newEl.classList.add('swipe-in');
-        
+        slider.classList.remove(outClass);
+        slider.classList.add('swipe-in');
+
         setTimeout(() => {
-            newEl.classList.remove('swipe-in');
+            slider.classList.remove('swipe-in');
             isAnimating = false;
         }, 800);
-    }, 400); 
+    }, 400);
 }
 
 nextBtn.addEventListener('click', () => changeCard('next'));
